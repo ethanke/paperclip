@@ -10,6 +10,7 @@ import {
   Bot,
   Code,
   Gem,
+  Moon,
   MousePointer2,
   Sparkles,
   Terminal,
@@ -77,6 +78,11 @@ const adapterDisplayMap: Record<string, AdapterDisplayInfo> = {
     label: "Gemini CLI",
     description: "Local Gemini agent",
     icon: Gem,
+  },
+  kimi_local: {
+    label: "Kimi CLI",
+    description: "Local Kimi agent",
+    icon: Moon,
   },
   opencode_local: {
     label: "OpenCode",
