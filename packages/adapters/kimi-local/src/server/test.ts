@@ -196,7 +196,7 @@ export async function testEnvironment(
             ? "Kimi CLI is retrying after quota exhaustion."
             : "Kimi CLI authentication is configured, but the current account or API key is over quota.",
           ...(detail ? { detail } : {}),
-          hint: "The configured Kimi account or API key is over quota. Check ai.google.dev usage/billing, then retry the probe.",
+          hint: "The configured Kimi/Moonshot account or API key is over quota. Check the Moonshot AI console usage/billing page, then retry the probe.",
         });
       } else if (probe.timedOut) {
         checks.push({
