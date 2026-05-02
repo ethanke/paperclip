@@ -10,6 +10,10 @@ import {
   isGeminiUnknownSessionError,
 } from "@paperclipai/adapter-gemini-local/server";
 import {
+  sessionCodec as kimiSessionCodec,
+  isKimiUnknownSessionError,
+} from "@paperclipai/adapter-kimi-local/server";
+import {
   sessionCodec as opencodeSessionCodec,
   isOpenCodeUnknownSessionError,
 } from "@paperclipai/adapter-opencode-local/server";
@@ -107,6 +111,24 @@ describe("adapter session codecs", () => {
       cwd: "/tmp/gemini",
     });
     expect(geminiSessionCodec.getDisplayId?.(serialized ?? null)).toBe("gemini-session-1");
+  });
+
+  it("normalizes kimi session params with cwd", () => {
+    const parsed = kimiSessionCodec.deserialize({
+      session_id: "kimi-session-1",
+      cwd: "/tmp/kimi",
+    });
+    expect(parsed).toEqual({
+      sessionId: "kimi-session-1",
+      cwd: "/tmp/kimi",
+    });
+
+    const serialized = kimiSessionCodec.serialize(parsed);
+    expect(serialized).toEqual({
+      sessionId: "kimi-session-1",
+      cwd: "/tmp/kimi",
+    });
+    expect(kimiSessionCodec.getDisplayId?.(serialized ?? null)).toBe("kimi-session-1");
   });
 
   it("preserves acpx session params required for compatibility checks", () => {
@@ -233,6 +255,29 @@ describe("gemini resume recovery detection", () => {
     ).toBe(true);
     expect(
       isGeminiUnknownSessionError(
+        "{\"type\":\"result\",\"subtype\":\"success\"}",
+        "",
+      ),
+    ).toBe(false);
+  });
+});
+
+describe("kimi resume recovery detection", () => {
+  it("detects unknown session errors from kimi output", () => {
+    expect(
+      isKimiUnknownSessionError(
+        "",
+        "unknown session id abc",
+      ),
+    ).toBe(true);
+    expect(
+      isKimiUnknownSessionError(
+        "",
+        "session abc not found",
+      ),
+    ).toBe(true);
+    expect(
+      isKimiUnknownSessionError(
         "{\"type\":\"result\",\"subtype\":\"success\"}",
         "",
       ),
