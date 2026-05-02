@@ -6,6 +6,7 @@ export const label = "Kimi CLI (local)";
 export const DEFAULT_KIMI_LOCAL_MODEL = "auto";
 
 export const models = [
+  // `auto` means Paperclip does not pass --model, so Kimi CLI uses its configured default.
   { id: DEFAULT_KIMI_LOCAL_MODEL, label: "Auto" },
   { id: "kimi-k2", label: "Kimi K2" },
   { id: "kimi-k2-turbo-preview", label: "Kimi K2 Turbo Preview" },
